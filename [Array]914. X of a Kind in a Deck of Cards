@@ -1,0 +1,21 @@
+//13ms
+//getOrDefault(Object key, V defaultValue)函数，如果含有key，则使用key值，否则使用默认值defaultValue
+class Solution {
+    public boolean hasGroupsSizeX(int[] deck) {
+        Map<Integer,Integer> count = new HashMap<>();
+        for (int c:deck){
+            count.put(c, count.getOrDefault(c, 0) + 1);
+        }
+        int g = -1;
+        for (int c:count.values()){
+            if (g == -1)
+                g = c;
+            else
+                g = gcd(g,c);
+        }
+        return g>1;
+    }
+    public int gcd(int g,int c){
+        return g == 0? c : gcd(c%g,g);
+    }
+}
