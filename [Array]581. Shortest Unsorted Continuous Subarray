@@ -1,3 +1,4 @@
+//32ms,空间复杂度0(N)
 class Solution {
     public int findUnsortedSubarray(int[] nums) {
         int[] snums = nums.clone();
@@ -16,5 +17,30 @@ class Solution {
             }
         }
         return (end - start >= 0 ? end - start + 1 : 0);
+    }
+}
+//16ms 空间复杂度O(1)
+class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        int len = nums.length;
+        int left = 0;
+        int right = len - 1;
+        while (left < right && nums[left] <= nums[left+1])
+            left++;
+        if (left >= right)
+            return 0;
+        while (right >= 0 && nums[right] >= nums[right-1])
+            right--;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for (int i = left; i <= right; i++){
+            min = Math.min(min,nums[i]);
+            max = Math.max(max,nums[i]);
+        }
+        while (left >= 0 && nums[left] > min)
+            left--;
+        while (right < len && nums[right] < max)
+            right++;
+        return right-left-1;
     }
 }
