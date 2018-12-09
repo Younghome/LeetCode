@@ -1,0 +1,43 @@
+Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true 
+if the ransom note can be constructed from the magazines ; otherwise, it will return false.
+
+Each letter in the magazine string can only be used once in your ransom note.
+//78ms,6.2%
+//每次都从magazine中删去ransomNote中的字母
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (magazine == null || ransomNote == null)
+            return false;
+        if (magazine.length() == 0 && ransomNote.length() == 0)
+            return true;
+        char[] ch = ransomNote.toCharArray();
+        for (char c : ch){
+            int index = magazine.indexOf(c);
+            if (index == -1)
+                return false;
+            String pre = magazine.substring(0,index);
+            String last = magazine.substring(index+1,magazine.length());
+            magazine = pre + last;
+        }
+        return true;
+    }
+}
+//8ms,96%
+//首先记录magazine中每个字母出现的次数，然后记录ransomNote中每个字母出现的次数，若某个字母在ransomNote中的次数大于magazine，则返回FALSE
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (magazine == null || ransomNote == null)
+            return false;
+        if (magazine.length() == 0 && ransomNote.length() == 0)
+            return true;
+        int[] ch = new int[26];
+        for (char c:magazine.toCharArray()){
+            ch[c-'a'] += 1;
+        }
+        for (char c:ransomNote.toCharArray()){
+            if (--ch[c-'a'] < 0)
+                return false;
+        }
+        return true;
+    }
+}
