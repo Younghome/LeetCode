@@ -1,0 +1,38 @@
+Given a string, find the first non-repeating character in it and return it's index. If it doesn't exist, return -1.
+//18ms,64.15%
+//因为字符串中的字幕都是小写字母，所以用一个int[26]的数组存储每个字母出现的次数，然后找出出现次数为1且在s中的下标最小的字符的位置
+class Solution {
+    public int firstUniqChar(String s) {
+        int[] count = new int[26];
+        for (char c : s.toCharArray()){
+            count[c-'a'] += 1;
+        }
+        int res = s.length();
+        for (int i = 0; i < count.length; i++){
+            if (count[i] == 1){
+                char c = (char)('a' + i);
+                res = Math.min(res,s.indexOf(c));
+            }
+        }
+        if (res < s.length())
+            return res;
+        return -1;
+    }
+}
+//8ms,97.43%
+//按照字母的a-z的顺序来查找s，如果s中某字母i的只出现了一次，则i的indexOf()和lastIndexOf()应相等
+class Solution {
+    public int firstUniqChar(String s) {
+        if (s == null || s.length() == 0)
+            return -1;
+        int min = Integer.MAX_VALUE;
+        for (int i = 'a'; i <= 'z'; i++){
+            int index = s.indexOf(i);
+            if ( index != -1 && index == s.lastIndexOf(i) && index < min)
+                min = index;
+        }
+        if (min != Integer.MAX_VALUE)
+            return min;
+        return -1;
+    }
+}
