@@ -1,0 +1,47 @@
+You are given a string representing an attendance record for a student. The record only contains the following three characters:
+  1.'A' : Absent.
+  2.'L' : Late.
+  3.'P' : Present.
+A student could be rewarded if his attendance record doesn't contain more than one 'A' (absent) or more than two continuous 'L' (late).
+
+You need to return whether the student could be rewarded according to his attendance record.
+//5ms,76.7%
+class Solution {
+    public boolean checkRecord(String s) {
+        boolean res = true;
+        if (s.indexOf('A') != s.lastIndexOf('A'))
+            res = false;
+        int l = s.indexOf('L');
+        while(l != -1){
+            if (l+2<s.length() && s.charAt(l+1) == 'L' && s.charAt(l+2) == 'L'){
+                res = false;
+                break;
+            }
+            l = s.indexOf('L',l+1);
+        }
+        return res;
+    }
+}
+//7ms，35.11%
+//因为s中只有三种字符，A、P、L，所以可以遍历s来判断
+class Solution {
+    public boolean checkRecord(String s) {
+        int late = 0,absent = 0;
+        for (char c:s.toCharArray()){
+            if (c == 'P')
+                late = 0;
+            else if (c == 'A'){
+                absent++;
+                late = 0;
+                if (absent > 1)
+                    return false;
+            }
+            else {
+                late++;
+                if (late > 2)
+                    return false;
+            }
+        }
+        return true;
+    }
+}
