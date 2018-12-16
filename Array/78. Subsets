@@ -1,0 +1,38 @@
+Given a set of distinct integers, nums, return all possible subsets (the power set).
+
+Note: The solution set must not contain duplicate subsets.
+
+Example:
+
+Input: nums = [1,2,3]
+Output:
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],
+  []
+]
+
+//2ms,36%
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> li = new ArrayList<>();
+        //Arrays.sort(nums);
+        subset(res,li,nums,0);
+        return res;
+    }
+    public void subset(List<List<Integer>> res, List<Integer> li,int[] nums,int start){
+        res.add(new ArrayList<Integer>(li));
+        for (int i = start; i < nums.length; i++){
+            li.add(nums[i]);
+            subset(res,li,nums,i+1);
+            li.remove(li.size()-1);
+        }
+        return;
+    }
+}
