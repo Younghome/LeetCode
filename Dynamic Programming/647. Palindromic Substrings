@@ -1,0 +1,56 @@
+Given a string, your task is to count how many palindromic substrings in this string.
+
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.
+
+Example 1:
+Input: "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+
+Example 2:
+Input: "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+//75ms,14.82%
+class Solution {
+    public int countSubstrings(String s) {
+        int count = 0;
+        char[] ch = s.toCharArray();
+        //int[][] s = new int[s.length()][s.length()];
+        for (int i = 0; i < s.length(); i++){
+            for (int j = i; j < s.length(); j++){
+                int l = i;
+                int r = j;
+                while(l<=r){
+                    if (ch[l] == ch[r]){
+                        l++;
+                        r--;
+                    }
+                    else
+                        break;
+                }
+                if (l >= r)
+                    count++;
+            }
+        }
+        return count;
+    }
+}
+//13ms,48.72%
+class Solution {
+    public int countSubstrings(String s) {
+        int count = 0;
+        char[] ch = s.toCharArray();
+        //int[][] s = new int[s.length()][s.length()];
+        for (int i = 0; i < s.length()*2; i++){
+            int left = i / 2;
+            int right = left + i % 2;
+            while (left >= 0 && right < s.length() && ch[left] == ch[right]){
+                count++;
+                left--;
+                right++;
+            }
+        }
+        return count;
+    }
+}
