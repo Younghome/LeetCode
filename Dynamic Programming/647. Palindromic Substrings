@@ -54,3 +54,33 @@ class Solution {
         return count;
     }
 }
+//10ms,63.6%,马拉车算法
+class Solution {
+    public int countSubstrings(String s) {
+        char[] S = new char[2 * s.length() + 3];
+        S[0] = '@';
+        S[1] = '#';
+        S[S.length - 1] ='$';
+        int t = 2;
+        for (char c:s.toCharArray()){
+            S[t++] = c;
+            S[t++] = '#';
+        }
+        int[] P = new int[S.length];
+        int mx = 0, center = 0;
+        for (int i = 1; i < S.length-1; i++){
+            if ( i < mx)
+                P[i] = Math.min(mx - i, P[2 * center - i]);
+            while (S[i + P[i] +1] == S[i - P[i] - 1])
+                P[i]++;
+            if (i + P[i] > mx){
+                mx = i + P[i];
+                center = i;
+            }
+        }
+        int ans = 0;
+        for (int i : P)
+            ans += (i+1)/2;
+        return ans;
+    }
+}
