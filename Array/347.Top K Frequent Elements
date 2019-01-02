@@ -34,3 +34,25 @@ class Solution {
         return res;
     }
 }
+//23ms,59.63%
+class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        HashMap<Integer,Integer> count = new HashMap<>();
+        for (int num:nums){
+            count.put(num,count.getOrDefault(num,0)+1);
+        }
+        List<Integer>[] buckets = new ArrayList[nums.length+1];
+        for (int key : count.keySet()){
+            int frenquency = count.get(key);
+            if (buckets[frenquency] == null)
+                buckets[frenquency] = new ArrayList<>();
+            buckets[frenquency].add(key);
+        }
+        List<Integer> res = new ArrayList<>();
+        for (int i = nums.length; i>=0 && res.size() < k; i--){
+            if (buckets[i]!=null)
+                res.addAll(buckets[i]);
+        }
+        return res;
+    }
+}
