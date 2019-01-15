@@ -1,0 +1,80 @@
+Given a binary tree, flatten it to a linked list in-place.
+
+For example, given the following tree:
+
+    1
+   / \
+  2   5
+ / \   \
+3   4   6
+The flattened tree should look like:
+
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+//寻找根节点的左子树的最右侧，如上例中的4，将4节点的右节点改为根节点的右节点即5节点，然后把根节点的右节点改为左节点，再把根节点的左节点设为null，再将根节
+//点的右节点当成下一轮的起始根节点，一直循环到根节点的左节点为null
+//13ms,非递归
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        TreeNode cur = root;
+        while(cur!=null){
+            if (cur.left!=null){
+                TreeNode next = cur.left;
+                while(next.right!=null)
+                    next = next.right;
+                next.right = cur.right;
+                cur.right = cur.left;
+                cur.left = null;
+            }
+            cur = cur.right;
+        }
+    }
+}
+//12ms，递归法
+class Solution {
+    
+    TreeNode prev = null,head=null;
+    
+    private void preorder(TreeNode node){
+        if(node==null)  return;
+        if(prev==null)
+            head = node;
+        else
+        {
+            
+            prev.right = node;
+            prev.left=null;
+        }
+        prev=node;
+        TreeNode temp = node.right;
+        preorder(node.left);
+        preorder(temp);
+    }
+    
+   public void flatten(TreeNode root) {
+        if (root == null) return;
+       
+        preorder(root);
+       root = head;
+    }
+}
